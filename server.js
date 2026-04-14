@@ -21,7 +21,7 @@ const app = express()
 app.use(cors({
     origin:[
         'http://localhost:3000',
-        'https://shoozie-store-ecommecre-pj67.vercel.app'
+        'shoozie-store-ecommecre-pj67-h27eq3brf.vercel.app'
     ]
 }));
 
