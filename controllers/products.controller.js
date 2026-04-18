@@ -11,13 +11,27 @@ async function getAllProducts(req,res){
 
 
 
-
-        const limit = Number(req.query.limit);
-        const page = Number(req.query.page);
+        const search = req.query.search;
+        const limit = Number(req.query.limit) || 50;
+        const page = Number(req.query.page) || 1;
         const skip = (page-1)*limit;
 
 
-    const productsData = await Product.find({},{color:0,highlights:0,brand:0,category:0})
+        //search    
+    let query = {};
+
+    if (search) {
+    query = {
+        $or: [
+            { title: { $regex: search, $options: "i" } },
+            { description: { $regex: search, $options: "i" } },
+            { brand: { $regex: search, $options: "i" } },
+        ],
+    };
+    }
+
+
+    const productsData = await Product.find(query,{color:0,highlights:0,brand:0,category:0})
         .skip(skip)
         .limit(limit)
 
