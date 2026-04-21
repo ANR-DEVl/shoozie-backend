@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 require('dotenv').config()
 
@@ -27,9 +28,26 @@ app.use(cors({
 }));
 // app.use(cors())
 
+const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100, 
+    message: { status: 'error', message: 'Too many requests, please try again later.' }
+})
+
+const orderLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, 
+    max: 10, 
+    message: { status: 'error', message: 'Too many orders, please try again later.' }
+})
+
+
+
+
 const PORT = process.env.PORT ||5000
 
 app.use(express.json());
+
+app.use('/api/', generalLimiter)
 
 app.use('/api/products',productsRouter);
 app.use('/api/orders',ordersRouter);
