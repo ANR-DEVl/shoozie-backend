@@ -34,7 +34,7 @@ async function getAllTitles(req,res){
         const page = Number(req.query.page);
         const skip = (page-1)*limit;
 
-        const ordersList = await Order.find({},'_id orderData.status')
+        const ordersList = await Order.find({},'_id orderData.status clientData.fullName')
             .sort({'orderData.date':-1})
             .skip(skip)
             .limit(limit)
