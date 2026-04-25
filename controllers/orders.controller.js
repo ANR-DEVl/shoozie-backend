@@ -217,7 +217,7 @@ async function updateStatus(req,res){
         const status = req.query.status;
 
         const updatedOrder = await Order.findByIdAndUpdate(id,
-            {$set:{'orderData.status':status},{new:true}}
+            {$set:{'orderData.status':status}},{new:true}
         )
         if(!updatedOrder){
             res.status(404).json({status:'fail',data:{message:"order not found"}})
