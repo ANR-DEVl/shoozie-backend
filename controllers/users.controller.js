@@ -119,7 +119,9 @@ async function login(req,res){
             phone:user.phone,
             userLocation:user.userLocation,
             opt2:user.opt2,
-            ordersId:user.ordersId}
+            ordersId:user.ordersId,
+            role:user.role
+        }
             ,token}})
 
 
