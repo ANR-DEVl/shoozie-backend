@@ -211,5 +211,28 @@ async function deleteOrder(req,res){
 }
 
 
+async function updateStatus(req,res){
+    try{
+        const id = req.params.id;
+        const status = req.query.status;
 
-module.exports = {getAllOrders,getOrder,addOrder,deleteOrder,getAllTitles};
+        const updatedOrder = await Order.findByIdAndUpdate(id,
+            {$set:{'orderData.status':status},{new:true}}
+        )
+        if(!updatedOrder){
+            res.status(404).json({status:'fail',data:{message:"order not found"}})
+        }
+
+        res.status(200).json({status:'success',data:{order:updatedOrder}});
+
+
+
+
+    }catch(err){
+        res.status(500).json({status:'error',message:err.message})
+    }
+
+}
+
+
+module.exports = {getAllOrders,getOrder,addOrder,deleteOrder,getAllTitles,updateStatus};

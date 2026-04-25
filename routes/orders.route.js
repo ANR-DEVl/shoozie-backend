@@ -4,7 +4,7 @@ const {body,param}= require('express-validator')
 
 const router = express.Router();
 
-const {getAllOrders,getOrder,addOrder,deleteOrder,getAllTitles} = require('../controllers/orders.controller');
+const {getAllOrders,getOrder,addOrder,deleteOrder,getAllTitles,updateStatus} = require('../controllers/orders.controller');
 
 const verifyToken = require('../middlewares/verifyToken')
 const verifyRole = require('../middlewares/verifyRole')
@@ -24,7 +24,8 @@ router.get('/titles',getAllTitles)
 
 router.route('/:id')
     .get(idValidation,validation,getOrder)
-    .delete(idValidation,validation,verifyToken,verifyRole(['admin']),deleteOrder);
+    .delete(idValidation,validation,verifyToken,verifyRole(['admin']),deleteOrder)
+    .patch(idValidation,updateStatus);
 
 
 
