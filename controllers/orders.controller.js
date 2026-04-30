@@ -28,18 +28,37 @@ async function getAllOrders(req,res){
 }
 
 
+
+
+
+
+
+
 async function getAllTitles(req,res){
     try{
-        const limit = Number(req.query.limit);
-        const page = Number(req.query.page);
+        const listStatus = req.query.listStatus;
+        const limit = Number(req.query.limit)||7;
+        const page = Number(req.query.page)||1;
         const skip = (page-1)*limit;
 
-        const ordersList = await Order.find({},'_id orderData.status clientData.fullName')
+
+
+        const statusValues =['pending','confirmed','shipped','done','canceled']
+
+        const filter = statusValues.includes(listStatus)
+    ? { 'orderData.status': listStatus }
+    : {};
+
+
+            const ordersList = await Order.find(filter,'_id orderData.status clientData.fullName')
             .sort({'orderData.date':-1})
             .skip(skip)
             .limit(limit)
 
-            console.log(ordersList)
+            // console.log(ordersList)
+        
+
+
 
         res.status(200).json({status:'success',data:{orders:ordersList}})
 
